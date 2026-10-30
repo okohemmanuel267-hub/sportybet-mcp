@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: sportybet-mcp
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci && npm run build
+    startCommand: 'npx -y supergateway@4.2.1 --stdio "node dist/index.js" --outputTransport streamableHttp --port $PORT --stateful --apiKey "$MCP_API_KEY" --healthEndpoint /healthz'
+    healthCheckPath: /healthz
+    envVars:
+      - key: MCP_API_KEY
+        generateValue: true
